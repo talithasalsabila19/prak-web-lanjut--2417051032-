@@ -2,18 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UserModel extends Model
 {
     use HasFactory;
 
     protected $table = 'user';
+
     protected $guarded = ['id'];
 
-    public function kelas()
+    public function getUser()
     {
-        return $this->belongsTo(kelas::class, 'kelas_id');
+        return $this->join('kelas', 'user.kelas_id', '=', 'kelas.id')
+                    ->select(
+                        'user.id',
+                        'user.nama',
+                        'user.nim',
+                        'kelas.nama_kelas'
+                    )
+                    ->get();
     }
 }
